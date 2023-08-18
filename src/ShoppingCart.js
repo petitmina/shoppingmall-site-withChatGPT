@@ -8,12 +8,32 @@ const products = [
   // ...더 많은 상품 데이터
 ];
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ onAddToWishlist }) => {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
+    const existingCartItem = cartItems.find((item) => item.id === product.id);
+
+    if (existingCartItem) {
+      const updatedCartItems = cartItems.map((item) =>
+        item.id === existingCartItem.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+      setCartItems(updatedCartItems);
+    } else {
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    }
   };
+  const updateCartItemQuantity = (index, newQuantity) => {
+    if (newQuantity > 0) {
+      const updatedCartItems = cartItems.map((item, i) =>
+        i === index ? { ...item, quantity: newQuantity } : item
+      );
+      setCartItems(updatedCartItems);
+    }
+  };
+
 
 const removeFromCart = (index) => {
   const updatedCartItems = cartItems.filter((item, i) => i !== index);
@@ -25,7 +45,7 @@ const removeFromCart = (index) => {
   };
 
 const calculateTotal = () => {
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   return total.toFixed(2); // 소수점 2자리까지 표시
   };
 
@@ -38,6 +58,7 @@ const calculateTotal = () => {
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <button onClick={() => addToCart(product)}>Add to Cart</button>
+            <button onClick={() => onAddToWishlist(product)}>Add to Wishlist</button>
           </div>
         ))}
       </div>
@@ -46,8 +67,14 @@ const calculateTotal = () => {
         <ul>
           {cartItems.map((item, index) => (
             <li key={index}>
-              {item.name} - ${item.price}
-              <button onClick={() => removeFromCart(index)}>Remove</button>
+              {item.name} - ${item.price} (Quantity: {item.quantity})
+              <button onClick={() => updateCartItemQuantity(index, item.quantity + 1)} >
+              +
+              </button>
+              <button onClick={() => updateCartItemQuantity(index, item.quantity - 1)}>
+              -
+            </button>
+            <button onClick={() => removeFromCart(index)}>Remove</button>
             </li>
           ))}
         </ul>
