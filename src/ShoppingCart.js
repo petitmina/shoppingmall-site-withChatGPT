@@ -12,7 +12,7 @@ const products = [
 const ShoppingCart = ({ onAddToWishlist }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const [products, setProducts] = useState([
+  const [reviewProducts, setReviewProducts] = useState([
     {
       id: 1,
       name: "Product 1",
@@ -73,12 +73,19 @@ const ShoppingCart = ({ onAddToWishlist }) => {
           <div key={product.id} className={styles.product}>
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
+              <Product
+                key={product.id}
+                product={product}
+                setReviewProducts={setReviewProducts}
+              />
+            
             <button onClick={() => addToCart(product)}>Add to Cart</button>
             <button onClick={() => onAddToWishlist(product)}>
               Add to Wishlist
             </button>
           </div>
         ))}
+        
       </div>
       <div className={styles.cart}>
         <h2>Cart</h2>
@@ -99,15 +106,7 @@ const ShoppingCart = ({ onAddToWishlist }) => {
               <button onClick={() => removeFromCart(index)}>Remove</button>
             </li>
           ))}
-          <div>
-            {products.map((product) => (
-              <Product
-                key={product.id}
-                product={product}
-                setProducts={setProducts}
-              />
-            ))}
-          </div>
+          
         </ul>
         {cartItems.length > 0 && (
           <div>
