@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ShoppingCart.module.css";
+import Product from "./Product";
 
 // 간단한 가상의 상품 데이터
 const products = [
@@ -10,6 +11,19 @@ const products = [
 
 const ShoppingCart = ({ onAddToWishlist }) => {
   const [cartItems, setCartItems] = useState([]);
+
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Product 1",
+      reviews: [],
+    },
+    {
+      id: 2,
+      name: "Product 2",
+      reviews: [],
+    },
+  ]);
 
   const addToCart = (product) => {
     const existingCartItem = cartItems.find((item) => item.id === product.id);
@@ -34,9 +48,8 @@ const ShoppingCart = ({ onAddToWishlist }) => {
     }
   };
 
-
-const removeFromCart = (index) => {
-  const updatedCartItems = cartItems.filter((item, i) => i !== index);
+  const removeFromCart = (index) => {
+    const updatedCartItems = cartItems.filter((item, i) => i !== index);
     setCartItems(updatedCartItems);
   };
 
@@ -44,9 +57,12 @@ const removeFromCart = (index) => {
     setCartItems([]);
   };
 
-const calculateTotal = () => {
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  return total.toFixed(2); // 소수점 2자리까지 표시
+  const calculateTotal = () => {
+    const total = cartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    return total.toFixed(2); // 소수점 2자리까지 표시
   };
 
   return (
@@ -58,7 +74,9 @@ const calculateTotal = () => {
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <button onClick={() => addToCart(product)}>Add to Cart</button>
-            <button onClick={() => onAddToWishlist(product)}>Add to Wishlist</button>
+            <button onClick={() => onAddToWishlist(product)}>
+              Add to Wishlist
+            </button>
           </div>
         ))}
       </div>
@@ -68,15 +86,28 @@ const calculateTotal = () => {
           {cartItems.map((item, index) => (
             <li key={index}>
               {item.name} - ${item.price} (Quantity: {item.quantity})
-              <button onClick={() => updateCartItemQuantity(index, item.quantity + 1)} >
-              +
+              <button
+                onClick={() => updateCartItemQuantity(index, item.quantity + 1)}
+              >
+                +
               </button>
-              <button onClick={() => updateCartItemQuantity(index, item.quantity - 1)}>
-              -
-            </button>
-            <button onClick={() => removeFromCart(index)}>Remove</button>
+              <button
+                onClick={() => updateCartItemQuantity(index, item.quantity - 1)}
+              >
+                -
+              </button>
+              <button onClick={() => removeFromCart(index)}>Remove</button>
             </li>
           ))}
+          <div>
+            {products.map((product) => (
+              <Product
+                key={product.id}
+                product={product}
+                setProducts={setProducts}
+              />
+            ))}
+          </div>
         </ul>
         {cartItems.length > 0 && (
           <div>

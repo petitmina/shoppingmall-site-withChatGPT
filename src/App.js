@@ -3,6 +3,7 @@ import Modal from "react-modal"; // 모달 라이브러리 사용
 import ShoppingCart from "./ShoppingCart";
 import LoginModal from "./LoginModal"; // LoginModal 컴포넌트 가져오기
 import Wishlist from "./Wishlist";
+// import Product from './Product';
 // import './App.css';
 
 Modal.setAppElement("#root"); // 모달 라이브러리 설정
@@ -12,6 +13,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [wishlistItems, setWishlistItems] = useState([]);
+  
 
   const handleLogin = (user) => {
     setLoggedIn(true);
