@@ -3,6 +3,7 @@ import Modal from "react-modal"; // 모달 라이브러리 사용
 import ShoppingCart from "./ShoppingCart";
 import LoginModal from "./LoginModal"; // LoginModal 컴포넌트 가져오기
 import Wishlist from "./Wishlist";
+import RegisterModal from "./RegisterModal";
 // import Product from './Product';
 // import './App.css';
 
@@ -13,7 +14,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [wishlistItems, setWishlistItems] = useState([]);
-  
+  const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false);
 
   const handleLogin = (user) => {
     setLoggedIn(true);
@@ -26,8 +27,14 @@ function App() {
     setUsername("");
   };
 
+  const handleSignUp = () => {
+    setRegisterModalIsOpen(false);
+  };
+
   const addToWishlist = (product) => {
-    const existingWishlistItem = wishlistItems.find((item) => item.id === product.id);
+    const existingWishlistItem = wishlistItems.find(
+      (item) => item.id === product.id
+    );
 
     if (existingWishlistItem) {
       const updatedWishlistItems = wishlistItems.map((item) =>
@@ -70,6 +77,16 @@ function App() {
           <button onClick={() => setModalIsOpen(true)}>Login</button>
         </div>
       )}
+
+      <div>
+        <button onClick={() => setRegisterModalIsOpen(true)}>Register</button>
+      </div>
+
+      <RegisterModal
+        isOpen={registerModalIsOpen}
+        onRequestClose={() => setRegisterModalIsOpen(false)}
+        onSignUp={handleSignUp}
+      />
       <LoginModal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
