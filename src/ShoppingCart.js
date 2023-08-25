@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import styles from "./ShoppingCart.module.css";
 import Product from "./Product";
+import {
+  loadCartFromLocalStorage,
+  updateCart,
+  clearCart,
+} from "./cartLocalStorage";
 
 // 간단한 가상의 상품 데이터
 const products = [
@@ -10,7 +15,7 @@ const products = [
 ];
 
 const ShoppingCart = ({ onAddToWishlist }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(loadCartFromLocalStorage());
 
   const [reviewProducts, setReviewProducts] = useState([
     {
@@ -28,8 +33,10 @@ const ShoppingCart = ({ onAddToWishlist }) => {
   const addToCart = (product) => {
     const existingCartItem = cartItems.find((item) => item.id === product.id);
 
+    let updatedCartItems; 
+
     if (existingCartItem) {
-      const updatedCartItems = cartItems.map((item) =>
+      updatedCartItems = cartItems.map((item) =>
         item.id === existingCartItem.id
           ? { ...item, quantity: item.quantity + 1 }
           : item
@@ -38,7 +45,10 @@ const ShoppingCart = ({ onAddToWishlist }) => {
     } else {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
     }
+
+    updateCart(updatedCartItems);
   };
+
   const updateCartItemQuantity = (index, newQuantity) => {
     if (newQuantity > 0) {
       const updatedCartItems = cartItems.map((item, i) =>
@@ -54,6 +64,7 @@ const ShoppingCart = ({ onAddToWishlist }) => {
   };
 
   const removeAllFromCart = () => {
+    clearCart();
     setCartItems([]);
   };
 

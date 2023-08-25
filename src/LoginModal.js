@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal'; // 모달 라이브러리 사용
 
 const LoginModal = ({ isOpen, onRequestClose, onLogin }) => {
@@ -8,6 +8,10 @@ const LoginModal = ({ isOpen, onRequestClose, onLogin }) => {
   })
 
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
