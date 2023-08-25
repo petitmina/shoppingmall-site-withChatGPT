@@ -18,8 +18,10 @@ const LoginModal = ({ isOpen, onRequestClose, onLogin }) => {
     const storedData =JSON.parse(localStorage.getItem('userData'));
 
     if (storedData) {
-      if(formData.email === storedData.email && formData.password === storedData) {
+      if(formData.email === storedData.email && formData.password === storedData.password) {
         setMessage('로그인 성공!');
+        onLogin(formData.email);
+        onRequestClose();
       } else {
         setMessage('로그인 실패. 올바른 이메일과 비밀번호를 입력하세요');
       }
@@ -27,19 +29,7 @@ const LoginModal = ({ isOpen, onRequestClose, onLogin }) => {
       setMessage('등록된 회원정보가 없습니다.');
     }
   }
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [error, setError] = useState('');
-
-  // const handleLogin = () => {
-  //   if (username === 'user' && password === 'password') {
-  //     onLogin(username);
-  //     onRequestClose();
-  //   } else {
-  //     setError('Invalid username or password');
-  //   }
-  // };
-
+  
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="Login">
@@ -63,28 +53,7 @@ const LoginModal = ({ isOpen, onRequestClose, onLogin }) => {
       </form>
       <p>{message}</p>
     </div>
-      {/* <h2>Login</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div>
-        <button onClick={handleLogin}>Login</button>
-        <button onClick={onRequestClose}>Close</button>
-      </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>} */}
+      
     </Modal>
   );
 };
